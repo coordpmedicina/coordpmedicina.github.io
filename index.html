@@ -1,115 +1,144 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coordinación Programa de Medicina | Universidad del Cauca</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --azul:#001B6D;
+    --rojo:#B5121B;
+    --gris:#f4f6f9;
+    --texto:#2c2c2c;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Montserrat',sans-serif;
+    background:var(--gris);
+    color:var(--texto);
+}
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:
+    linear-gradient(rgba(0,27,109,.92), rgba(0,27,109,.92)),
+    url('https://images.unsplash.com/photo-1516549655169-df83a0774514');
+    background-size:cover;
+    background-position:center;
+    color:white;
+    padding:40px;
+}
+
+.container{
+    max-width:900px;
+}
+
+.logo{
+    width:110px;
+    margin-bottom:30px;
+}
+
+h1{
+    font-size:3.5rem;
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+h2{
+    font-size:1.5rem;
+    font-weight:300;
+    margin-bottom:30px;
+}
+
+p{
+    font-size:1.1rem;
+    max-width:700px;
+    margin:auto;
+    line-height:1.8;
+}
+
+.line{
+    width:90px;
+    height:4px;
+    background:var(--rojo);
+    margin:35px auto;
+    border-radius:10px;
+}
+
+footer{
+    position:absolute;
+    bottom:25px;
+    left:0;
+    width:100%;
+    text-align:center;
+    font-size:.9rem;
+    opacity:.85;
+}
+
+@media(max-width:768px){
+
+    h1{
+        font-size:2.3rem;
+    }
+
+    h2{
+        font-size:1.2rem;
+    }
+
+    p{
+        font-size:1rem;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
 <section class="hero">
-    <div class="container">
-        <span class="badge">Universidad del Cauca</span>
 
 ```
-    <h1>Dr. [Nombre del Coordinador]</h1>
+<div class="container">
 
-    <h2>Coordinador del Programa de Medicina</h2>
+    <img class="logo"
+    src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Escudo_Universidad_del_Cauca.svg"
+    alt="Universidad del Cauca">
+
+    <h1>Coordinación Programa de Medicina</h1>
+
+    <h2>Universidad del Cauca</h2>
+
+    <div class="line"></div>
 
     <p>
-        Sitio web personal dedicado a la gestión académica, innovación curricular,
-        educación médica, investigación y fortalecimiento de los procesos de formación
-        en el Programa de Medicina de la Universidad del Cauca.
+        Sitio web oficial de la Coordinación del Programa de Medicina
+        de la Universidad del Cauca.
     </p>
 
-    <div class="actions">
-        <a href="#perfil" class="btn-primary">Perfil Profesional</a>
-        <a href="#proyectos" class="btn-secondary">Proyectos</a>
-    </div>
 </div>
-```
-
-</section>
-
-<section id="perfil">
-    <div class="container">
-        <h2>Perfil</h2>
-
-```
-    <p>
-        Médico y docente universitario con experiencia en educación médica,
-        gestión curricular y procesos de aseguramiento de la calidad.
-        Actualmente lidera la coordinación académica del Programa de Medicina
-        de la Universidad del Cauca, promoviendo iniciativas de innovación
-        educativa, simulación clínica, investigación formativa e integración
-        de nuevas tecnologías en la enseñanza.
-    </p>
-</div>
-```
-
-</section>
-
-<section id="lineas">
-    <div class="container">
-        <h2>Líneas de Trabajo</h2>
-
-```
-    <div class="cards">
-
-        <div class="card">
-            <h3>Educación Médica</h3>
-            <p>
-                Diseño curricular, evaluación de competencias y metodologías activas.
-            </p>
-        </div>
-
-        <div class="card">
-            <h3>Innovación Educativa</h3>
-            <p>
-                Simulación clínica, inteligencia artificial y transformación digital.
-            </p>
-        </div>
-
-        <div class="card">
-            <h3>Investigación</h3>
-            <p>
-                Desarrollo de proyectos académicos y fortalecimiento de capacidades investigativas.
-            </p>
-        </div>
-
-    </div>
-</div>
-```
-
-</section>
-
-<section id="proyectos">
-    <div class="container">
-        <h2>Proyectos y Publicaciones</h2>
-
-```
-    <p>
-        Espacio destinado a compartir avances de la reforma curricular,
-        iniciativas académicas, publicaciones, conferencias y actividades
-        de interés para la comunidad universitaria.
-    </p>
-</div>
-```
-
-</section>
-
-<section id="contacto">
-    <div class="container">
-        <h2>Contacto</h2>
-
-```
-    <p>
-        Facultad de Ciencias de la Salud<br>
-        Universidad del Cauca<br>
-        Popayán, Colombia
-    </p>
-
-    <a href="mailto:correo@unicauca.edu.co" class="btn-primary">
-        Contactar
-    </a>
-</div>
-```
-
-</section>
 
 <footer>
-    <p>
-        © 2026 · Sitio Web Personal · Coordinación Programa de Medicina · Universidad del Cauca
-    </p>
+    © 2026 · Universidad del Cauca · Popayán, Colombia
 </footer>
+```
+
+</section>
+
+</body>
+</html>
