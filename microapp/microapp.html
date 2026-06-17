@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MicroApp - Gestor de Microcurrículos | Medicina Unicauca</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4"></script>
+    <style>
+        :root {
+            --c1: #1D5FA6;
+            --c2: #2478C5;
+            --c3: #4A9DD4;
+            --c4: #7DBFE8;
+            --bg: #F4F7FA;
+            --card: #fff;
+            --text: #1a2535;
+            --muted: #5a6e85;
+            --border: #dce6ef;
+            --green: #1a7a4a;
+            --green-bg: #e8f6ee;
+            --amber: #8a5e00;
+            --amber-bg: #fef3d6;
+            --red: #b02020;
+            --red-bg: #fde8e8;
+            --radius: 12px;
+            --shadow: 0 2px 12px rgba(29, 95, 166, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            color: var(--text);
+        }
+
+        header {
+            background: linear-gradient(135deg, #0d3d6e, #1D5FA6 60%, #2478C5);
+            padding: 26px 32px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: white;
+        }
+
+        .logo-c {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            color: #fff;
+            font-weight: 700;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            flex-shrink: 0;
+        }
+
+        header h1 {
+            font-size: 21px;
+            font-weight: 600;
+            line-height: 1.2;
+            color: #fff;
+        }
+
+        header p {
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        main {
+            padding: 26px 32px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            margin-bottom: 26px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .nav-tab {
+            padding: 14px 20px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: var(--muted);
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-tab:hover {
+            color: var(--c1);
+        }
+
+        .nav-tab.active {
+            color: var(--c1);
+            border-bottom-color: var(--c1);
+        }
+
+        .content {
+            padding: 26px 32px;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px 13px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+            color: var(--text);
+            background: var(--card);
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="email"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--c2);
+            box-shadow: 0 0 0 3px rgba(36, 120, 197, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-row.three {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 26px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .btn-primary {
+            background: var(--c1);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--c2);
+        }
+
+        .btn-secondary {
+            background: var(--muted);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4a5a70;
+        }
+
+        .btn-success {
+            background: var(--green);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #136238;
+        }
+
+        .btn-warning {
+            background: var(--amber);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #6d4a00;
+        }
+
+        .btn-danger {
+            background: var(--red);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #8f1a1a;
+        }
+
+        .alert {
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: none;
+            border: 1.5px solid;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: var(--green-bg);
+            color: var(--green);
+            border-color: var(--green);
+        }
+
+        .alert-error {
+            background: var(--red-bg);
+            color: var(--red);
+            border-color: var(--red);
+        }
+
+        .alert-warning {
+            background: var(--amber-bg);
+            color: var(--amber);
+            border-color: var(--amber);
+        }
+
+        .section-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--muted);
+            font-weight: 700;
+            margin-bottom: 14px;
+            border-left: 3px solid var(--c1);
+            padding-left: 10px;
+        }
+
+        .competency-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .competency-box {
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            background: var(--bg);
+            box-shadow: var(--shadow);
+        }
+
+        .competency-box h4 {
+            color: var(--c1);
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .add-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            padding: 8px 14px;
+            background: var(--c1);
+            color: white;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .add-btn:hover {
+            background: var(--c2);
+        }
+
+        .remove-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 10px;
+            background: var(--red);
+            color: white;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .remove-btn:hover {
+            background: #8f1a1a;
+        }
+
+        .item-list {
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 14px;
+            margin-top: 12px;
+            border: 1.5px solid var(--border);
+        }
+
+        .item {
+            background: var(--card);
+            padding: 12px 14px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 3px solid var(--c1);
+            box-shadow: var(--shadow);
+        }
+
+        .item:last-child {
+            margin-bottom: 0;
+        }
+
+        .preview-section {
+            background: var(--bg);
+            padding: 18px;
+            border-radius: var(--radius);
+            margin-top: 18px;
+            border: 1.5px solid var(--border);
+        }
+
+        .preview-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--muted);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .preview-content {
+            background: var(--card);
+            padding: 16px;
+            border-radius: 8px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+
+        .stat-card {
+            background: var(--card);
+            padding: 16px;
+            border-radius: var(--radius);
+            text-align: center;
+            border: 1.5px solid var(--border);
+            box-shadow: var(--shadow);
+            border-left: 3px solid var(--c1);
+        }
+
+        .stat-card h3 {
+            color: var(--c1);
+            font-size: 24px;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .stat-card p {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .validation-list {
+            background: var(--bg);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 14px;
+            border: 1.5px solid var(--border);
+        }
+
+        .validation-item {
+            padding: 10px 12px;
+            margin: 6px 0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .validation-item.valid {
+            background: var(--green-bg);
+            color: var(--green);
+        }
+
+        .validation-item.invalid {
+            background: var(--red-bg);
+            color: var(--red);
+        }
+
+        .validation-item.warning {
+            background: var(--amber-bg);
+            color: var(--amber);
+        }
+
+        .icon {
+            font-size: 14px;
+        }
+
+        /* Version Management Panel */
+        .version-panel {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1.5px solid var(--border);
+            box-shadow: var(--shadow);
+            margin-bottom: 26px;
+            overflow: hidden;
+        }
+
+        .version-header {
+            background: linear-gradient(90deg, #0d3d6e, #1D5FA6);
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .version-header h2 {
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .version-body {
+            padding: 18px;
+        }
+
+        .version-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .version-card {
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--bg);
+        }
+
+        .version-card:hover {
+            border-color: var(--c1);
+            box-shadow: var(--shadow);
+        }
+
+        .version-card.active {
+            border-color: var(--c1);
+            background: rgba(29, 95, 166, 0.05);
+        }
+
+        .version-card-title {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .version-card-date {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .version-card-status {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        .version-card-status.draft {
+            background: var(--amber-bg);
+            color: var(--amber);
+        }
+
+        .version-card-status.active {
+            background: var(--green-bg);
+            color: var(--green);
+        }
+
+        .version-card-status.archived {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row.three {
+                grid-template-columns: 1fr;
+            }
+
+            .competency-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+
+            .nav-tab {
+                font-size: 11px;
+                padding: 10px 12px;
+            }
+
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid var(--border);
+            border-top-color: var(--c1);
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Sync Status Styles */
+        .sync-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fbbf24;
+            flex-shrink: 0;
+        }
+
+        .sync-dot.ok {
+            background: var(--green);
+        }
+
+        .sync-dot.err {
+            background: var(--red);
+        }
+
+        .sync-dot.spin {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Dialog overlay */
+        #versionDialog {
+            z-index: 999 !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-c">🎓</div>
+        <div>
+            <h1>MicroApp - Gestor de Microcurrículos</h1>
+            <p>Programa de Medicina | Universidad del Cauca</p>
+        </div>
+        <div style="margin-left: auto; color: white; text-align: right; font-size: 12px;">
+            <div id="syncStatus" style="display: flex; align-items: center; gap: 6px;">
+                <span class="sync-dot" id="syncDot"></span>
+                <span id="syncText">Conectando...</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- TABS NAVIGATION -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="identification">📋 Identificación</button>
+            <button class="nav-tab" data-tab="teachers">👨‍🏫 Docentes</button>
+            <button class="nav-tab" data-tab="presentation">📝 Presentación</button>
+            <button class="nav-tab" data-tab="competencies">🎯 Competencias</button>
+            <button class="nav-tab" data-tab="methodology">📚 Metodología</button>
+            <button class="nav-tab" data-tab="schedule">📅 Cronograma</button>
+            <button class="nav-tab" data-tab="evaluation">✅ Evaluación</button>
+            <button class="nav-tab" data-tab="export">📤 Exportar</button>
+            <button class="nav-tab" data-tab="preview">👁️ Vista Previa</button>
+        </div>
+
+        <div class="content">
+            <!-- ALERTS -->
+            <div id="alert" class="alert"></div>
+
+            <!-- TAB: IDENTIFICATION -->
+            <div id="identification" class="tab-content active">
+                <h2 class="section-title">📋 Identificación de la Asignatura</h2>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombre de la Asignatura</label>
+                        <select id="subjectName" onchange="loadSubjectDetails()">
+                            <option value="">Seleccionar una asignatura...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Código <span style="color: #999; font-size: 11px;">(Protegido)</span></label>
+                        <input type="text" id="subjectCode" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
+                    </div>
+                </div>
+
+                <div class="form-row three">
+                    <div class="form-group">
+                        <label>Semestre <span style="color: #999; font-size: 11px;">(Protegido)</span></label>
+                        <input type="number" id="semester" min="1" max="13" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label>Créditos Académicos <span style="color: #999; font-size: 11px;">(Protegido)</span></label>
+                        <input type="number" id="credits" min="1" max="10" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label>Horas de Docencia Directa <span style="color: #999; font-size: 11px;">(Protegido)</span></label>
+                        <input type="number" id="hoursPerWeek" min="1" max="40" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label style="font-weight: 600; color: #1D5FA6;">📍 Módulo <span style="color: #999; font-size: 11px;">(Protegido)</span></label>
+                        <div id="module" style="background: linear-gradient(135deg, #1D5FA6, #2478C5); color: white; padding: 10px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; text-align: center; cursor: not-allowed; border: 1px solid #2478C5; min-height: 32px; display: flex; align-items: center; justify-content: center;">
+                            Seleccionar asignatura
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label style="font-weight: 600; color: #1D5FA6;">📋 Prerrequisitos (si aplica)</label>
+                    <div style="position: relative; display: inline-block; width: 100%;">
+                        <button id="prerequisitesToggle" type="button" onclick="togglePrerequisitesDropdown(event)" style="background: white; border: 1px solid #dce6ef; padding: 10px 13px; border-radius: 8px; font-size: 13px; width: 100%; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #5a6e85;">
+                            <span id="prerequisitesDisplay">Selecciona prerrequisitos...</span>
+                            <span style="font-size: 10px;">▼</span>
+                        </button>
+                        <div id="prerequisitesContainer" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #dce6ef; border-top: none; border-radius: 0 0 8px 8px; max-height: 250px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                            <div style="padding: 12px; color: #999; font-size: 12px;">Cargando asignaturas...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: TEACHERS -->
+            <div id="teachers" class="tab-content">
+                <h2 class="section-title">👨‍🏫 Docentes Responsables</h2>
+
+                <div class="form-group">
+                    <label>Coordinador de Asignatura</label>
+                    <input type="text" id="coordinator" placeholder="Nombre completo del coordinador">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email Coordinador</label>
+                        <input type="email" id="coordinatorEmail" placeholder="coordinador@unicauca.edu.co">
+                    </div>
+                    <div class="form-group">
+                        <label>Área Temática del Coordinador</label>
+                        <input type="text" id="coordinatorArea" placeholder="Ej: Anatomía General">
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 25px; color: #667eea;">Otros Docentes</h3>
+
+                <div class="form-group">
+                    <label>Nombre del Docente</label>
+                    <input type="text" id="teacherName" placeholder="Nombre completo">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="teacherEmail" placeholder="docente@unicauca.edu.co">
+                    </div>
+                    <div class="form-group">
+                        <label>Área Temática</label>
+                        <input type="text" id="teacherArea" placeholder="Ej: Anatomía Topográfica">
+                    </div>
+                </div>
+
+                <button class="add-btn" onclick="addTeacher()">+ Agregar Docente</button>
+
+                <div id="teachersList" class="item-list" style="display: none;">
+                    <h4>Docentes Agregados:</h4>
+                    <div id="teachersContainer"></div>
+                </div>
+            </div>
+
+            <!-- TAB: PRESENTATION -->
+            <div id="presentation" class="tab-content">
+                <h2 class="section-title">📝 Presentación de la Asignatura</h2>
+
+                <div class="form-group">
+                    <label>Presentación de la Asignatura</label>
+                    <textarea id="departmentMission" placeholder="Descripción de la asignatura, su relevancia y contexto en el programa..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Objetivo General</label>
+                    <textarea id="generalObjectives" placeholder="Objetivo general de la asignatura..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Objetivos Específicos</label>
+                    <textarea id="specificObjectives" placeholder="Listar los objetivos específicos de aprendizaje..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Justificación de la Asignatura</label>
+                    <textarea id="justification" placeholder="¿Por qué esta asignatura es importante para la formación médica?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción General de la Asignatura</label>
+                    <textarea id="generalDescription" placeholder="Descripción detallada de los contenidos, alcance y contexto de la asignatura..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Espacios de Asesorías</label>
+                    <input type="text" id="advisorySpaces" placeholder="Ej: Lunes a viernes 2-4pm en oficina 301">
+                </div>
+            </div>
+
+            <!-- TAB: COMPETENCIES -->
+            <div id="competencies" class="tab-content">
+                <div style="background: linear-gradient(135deg, #1D5FA6, #2478C5); color: white; padding: 24px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 16px rgba(29, 95, 166, 0.15);">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: white;">📜 Perfil de Egreso</h3>
+                    <p style="line-height: 1.7; font-size: 15px; color: rgba(255, 255, 255, 0.95);">
+                        El médico egresado de la Universidad del Cauca será ante todo un ciudadano ejemplar, capaz de: realizar un ejercicio médico integral y resolutivo en ámbitos comunitarios e institucionales en todas las etapas de la atención en salud, en concordancia con sus determinantes; participar en procesos de investigación, evaluación y gestión de problemas prioritarios de salud en el ámbito clínico, epidemiológico, cultural, médico legal y social, acorde con el desarrollo científico y normativo vigente; e interactuar con colegas, pacientes, familias, equipos de salud y colectivos, con respeto, empatía, idoneidad profesional, liderazgo y ética.
+                    </p>
+                </div>
+
+                <h2 class="section-title">🎯 Matriz de Competencias</h2>
+
+                <div style="overflow-x: auto; margin-top: 20px;">
+                    <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <thead>
+                            <tr style="background: linear-gradient(135deg, #1D5FA6, #2478C5); color: white;">
+                                <th style="padding: 14px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2);">Módulo</th>
+                                <th style="padding: 14px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2);">Competencia</th>
+                                <th style="padding: 14px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2);">Resultado de Aprendizaje</th>
+                                <th style="padding: 14px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2);">Estrategia Metodológica</th>
+                                <th style="padding: 14px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2);">Estrategia de Evaluación</th>
+                                <th style="padding: 14px; text-align: left; font-weight: 600;">Indicador</th>
+                            </tr>
+                        </thead>
+                        <tbody id="competenciesMatrixBody">
+                            <tr style="border-bottom: 1px solid #dce6ef; background: #f9fbfd;">
+                                <td colspan="6" style="padding: 40px 20px; text-align: center; color: #999;">
+                                    No hay competencias agregadas. Usa el formulario a continuación para agregar.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="background: #f9fbfd; padding: 24px; border-radius: 12px; margin-top: 30px; border: 1px solid #dce6ef;">
+                    <h3 style="margin-bottom: 20px; color: #1D5FA6; font-weight: 600;">➕ Agregar Competencia</h3>
+
+                    <div class="form-row three">
+                        <div class="form-group">
+                            <label style="font-weight: 500; font-size: 12px;">📍 Módulo *</label>
+                            <select id="compModulo" onchange="updateCompetenciesDropdown()" style="width: 100%; padding: 10px; border: 1px solid #dce6ef; border-radius: 6px; font-size: 13px;">
+                                <option value="">Seleccionar módulo...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-weight: 600; font-size: 13px;">🎯 Competencia *</label>
+                            <div style="position: relative;">
+                                <button id="compCompetenciaToggle" type="button" style="width: 100%; padding: 10px; border: 1px solid #dce6ef; border-radius: 6px; font-size: 11px; text-align: left; background: white; cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleCompetenciaDropdown(event)">
+                                    <span id="compCompetenciaDisplay">Seleccionar competencia...</span>
+                                    <span style="font-size: 12px; color: #666;">▼</span>
+                                </button>
+                                <div id="compCompetenciaDropdown" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #dce6ef; border-top: none; border-radius: 0 0 6px 6px; max-height: 250px; overflow-y: auto; display: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                </div>
+                                <input type="hidden" id="compCompetencia" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-weight: 600; font-size: 13px;">📋 Resultados *</label>
+                            <div id="compResultadosCheckboxes" style="display: grid; grid-template-columns: 1fr; gap: 6px; background: white; padding: 8px; border: 1px solid #dce6ef; border-radius: 6px; max-height: 150px; overflow-y: auto;">
+                                <p style="color: #999; font-size: 11px;">Selecciona competencia</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row two">
+                        <div class="form-group">
+                            <label>Estrategia Metodológica</label>
+                            <textarea id="compEstrategiaMet" placeholder="Ej: Clase magistral, casos clínicos..." style="width: 100%; padding: 10px; border: 1px solid #dce6ef; border-radius: 6px; font-size: 14px; min-height: 60px;"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Estrategia de Evaluación</label>
+                            <textarea id="compEstrategiaEval" placeholder="Ej: Examen escrito, presentación..." style="width: 100%; padding: 10px; border: 1px solid #dce6ef; border-radius: 6px; font-size: 14px; min-height: 60px;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Indicador</label>
+                        <textarea id="compIndicador" placeholder="Ej: % de estudiantes que alcanzaron..." style="width: 100%; padding: 10px; border: 1px solid #dce6ef; border-radius: 6px; font-size: 14px; min-height: 60px;"></textarea>
+                    </div>
+
+                    <button class="add-btn" onclick="addCompetencyRowFromSelects()" style="background: linear-gradient(135deg, #1D5FA6, #2478C5); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-top: 15px;">+ Agregar Competencia</button>
+                </div>
+            </div>
+
+            <!-- TAB: METHODOLOGY -->
+            <div id="methodology" class="tab-content">
+                <h2 class="section-title">📚 Metodología de Enseñanza y Aprendizaje</h2>
+
+                <p style="color: #666; margin-bottom: 20px;">Descripción de métodos pedagógicos por tema, horas presenciales, trabajo independiente y recursos</p>
+
+                <div class="form-group">
+                    <label>Tema/Unidad</label>
+                    <input type="text" id="topicName" placeholder="Ej: Osteología">
+                </div>
+
+                <div class="form-row three">
+                    <div class="form-group">
+                        <label>Método de Enseñanza</label>
+                        <select id="teachingMethod">
+                            <option value="">Seleccionar...</option>
+                            <option value="Clase Magistral">Clase Magistral</option>
+                            <option value="Taller">Taller</option>
+                            <option value="Seminario">Seminario</option>
+                            <option value="Práctica de Laboratorio">Práctica de Laboratorio</option>
+                            <option value="Estudio de Casos">Estudio de Casos</option>
+                            <option value="Aprendizaje Basado en Problemas">Aprendizaje Basado en Problemas</option>
+                            <option value="Trabajo en Grupo">Trabajo en Grupo</option>
+                            <option value="Aula Virtual">Aula Virtual</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Horas Presenciales</label>
+                        <input type="number" id="presentHours" min="0" max="20" placeholder="Ej: 2">
+                    </div>
+                    <div class="form-group">
+                        <label>Horas Trabajo Independiente</label>
+                        <input type="number" id="independentHours" min="0" max="20" placeholder="Ej: 4">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción de la Metodología</label>
+                    <textarea id="methodDescription" placeholder="Describir detalladamente cómo se desarrollará..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Recursos Didácticos</label>
+                    <input type="text" id="resources" placeholder="Ej: Cadáver, modelos anatómicos, software de simulación">
+                </div>
+
+                <div class="form-group">
+                    <label>Bibliografía Recomendada</label>
+                    <textarea id="bibliography" placeholder="Listar referencias bibliográficas..."></textarea>
+                </div>
+
+                <button class="add-btn" onclick="addTopic()">+ Agregar Tema</button>
+
+                <div id="topicsList" class="item-list" style="display: none;">
+                    <h4>Temas Agregados:</h4>
+                    <div id="topicsContainer"></div>
+                </div>
+            </div>
+
+            <!-- TAB: SCHEDULE -->
+            <div id="schedule" class="tab-content">
+                <h2 class="section-title">📅 Cronograma de Actividades</h2>
+
+                <p style="color: #666; margin-bottom: 20px;">Programación temporal semanal detallada del semestre</p>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Semana</label>
+                        <input type="number" id="weekNumber" min="1" max="16" placeholder="Ej: 1">
+                    </div>
+                    <div class="form-group">
+                        <label>Tema a Desarrollar</label>
+                        <input type="text" id="weekTopic" placeholder="Ej: Introducción a Anatomía Humana">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Actividades Planeadas</label>
+                    <textarea id="weekActivities" placeholder="Detallar actividades de la semana..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Evaluación Prevista</label>
+                        <input type="text" id="weekEvaluation" placeholder="Ej: Quiz sobre conceptos básicos">
+                    </div>
+                    <div class="form-group">
+                        <label>Observaciones</label>
+                        <input type="text" id="weekNotes" placeholder="Notas adicionales">
+                    </div>
+                </div>
+
+                <button class="add-btn" onclick="addWeek()">+ Agregar Semana</button>
+
+                <div id="scheduleList" class="item-list" style="display: none;">
+                    <h4>Cronograma:</h4>
+                    <div id="scheduleContainer"></div>
+                </div>
+
+                <hr style="margin: 30px 0; border: none; border-top: 2px solid #ddd;">
+
+                <h2 class="section-title">📅 Malla Semanal del Semestre</h2>
+                <p style="color: #666; margin-bottom: 20px;">Horario de clases por día y hora. Haz clic en cualquier celda para editar.</p>
+
+                <button class="add-btn" onclick="loadWeeklySchedule()">📥 Cargar Malla del Sistema</button>
+
+                <div id="mallaContainer" style="margin-top: 20px; overflow-x: auto;">
+                    <p style="color: #999; text-align: center;">Selecciona una asignatura y carga la malla semanal</p>
+                </div>
+            </div>
+
+            <!-- TAB: EVALUATION -->
+            <div id="evaluation" class="tab-content">
+                <h2 class="section-title">✅ Sistema de Evaluación</h2>
+
+                <div class="form-group">
+                    <label>Evaluación Diagnóstica</label>
+                    <textarea id="diagnosticEvaluation" placeholder="Describir cómo se valorarán los aprendizajes previos (sin calificación numérica)..."></textarea>
+                </div>
+
+                <h3 style="margin-top: 25px; color: #667eea;">Evaluación Formativa</h3>
+                <p style="font-size: 0.9em; color: #666; margin-bottom: 10px;">Registro cualitativo del desempeño continuo</p>
+
+                <div class="form-group">
+                    <label>Estrategias de Evaluación Formativa</label>
+                    <textarea id="formativeEvaluation" placeholder="Ej: Participación en clase, trabajos en grupo, ejercicios prácticos..."></textarea>
+                </div>
+
+                <h3 style="margin-top: 25px; color: #667eea;">Evaluación Sumativa</h3>
+                <p style="font-size: 0.9em; color: #666; margin-bottom: 10px;">Calificación numérica con ponderaciones</p>
+
+                <div class="form-row three">
+                    <div class="form-group">
+                        <label>Primer Parcial (%)</label>
+                        <input type="number" id="firstExam" value="35" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Segundo Parcial (%)</label>
+                        <input type="number" id="secondExam" value="35" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Examen Final (%)</label>
+                        <input type="number" id="finalExam" value="30" min="0" max="100">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción de Evaluaciones</label>
+                    <textarea id="evaluationDescription" placeholder="Detallar tipo de preguntas, formato, duración, etc..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Criterios de Calificación</label>
+                    <textarea id="gradingCriteria" placeholder="Describir qué se espera para cada rango de calificación..."></textarea>
+                </div>
+            </div>
+
+            <!-- TAB: EXPORT -->
+            <div id="export" class="tab-content">
+                <h2 class="section-title">📤 Exportar Microcurrículo</h2>
+
+                <p style="color: #666; margin-bottom: 20px;">Selecciona el formato en el que deseas descargar tu microcurrículo</p>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3 id="completionPercentage">0%</h3>
+                        <p>Completado</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="fieldCount">0</h3>
+                        <p>Campos Completos</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="teachersCount">0</h3>
+                        <p>Docentes</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; color: #667eea; margin-bottom: 20px;">Opciones de Descarga</h3>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="exportPDF()">
+                        📄 Descargar PDF
+                    </button>
+                    <button class="btn-primary" onclick="exportMarkdown()">
+                        📝 Descargar Markdown
+                    </button>
+                    <button class="btn-secondary" onclick="exportJSON()">
+                        💾 Guardar Datos (JSON)
+                    </button>
+                </div>
+
+                <div id="validationContainer" style="margin-top: 30px;"></div>
+            </div>
+
+            <!-- TAB: PREVIEW -->
+            <div id="preview" class="tab-content">
+                <h2 class="section-title">👁️ Vista Previa del Microcurrículo</h2>
+
+                <div id="previewContent" class="preview-section">
+                    <p style="text-align: center; color: #999;">
+                        Completa los campos para ver la vista previa...
+                    </p>
+                </div>
+            </div>
+
+            <!-- BUTTON GROUP AT THE END -->
+            <div class="button-group" style="margin-top: 40px; border-top: 2px solid #eee; padding-top: 20px;">
+                <button class="btn-secondary" onclick="clearForm()">🗑️ Limpiar Formulario</button>
+                <button class="btn-warning" onclick="saveLocalStorage()">💾 Guardar Progreso</button>
+                <button class="btn-success" onclick="loadLocalStorage()">📂 Cargar Progreso</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Version Dialog Modal -->
+    <div id="versionDialog" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; align-items: center; justify-content: center;">
+        <div style="background: var(--card); border-radius: var(--radius); padding: 24px; max-width: 400px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+            <h3 style="color: var(--text); margin-bottom: 16px; font-size: 16px; font-weight: 600;">Crear Nueva Versión</h3>
+            <div class="form-group">
+                <label>Nombre de la versión</label>
+                <input type="text" id="versionName" placeholder="Ej: v1.0 - Propuesta inicial">
+            </div>
+            <div class="form-group">
+                <label>Notas (opcional)</label>
+                <textarea id="versionNotes" placeholder="Cambios realizados..." style="min-height: 80px;"></textarea>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                <button class="btn btn-secondary" onclick="closeVersionDialog()">Cancelar</button>
+                <button class="btn btn-primary" onclick="createNewVersion()">Crear Versión</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4"></script>
+    <script src="config.js"></script>
+    <script src="app-supabase.js"></script>
+</body>
+</html>

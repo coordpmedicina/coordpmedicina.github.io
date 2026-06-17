@@ -1,0 +1,196 @@
+{
+  "modulos": [
+    {
+      "id": "cb",
+      "name": "Ciencias Básicas",
+      "competencias": [
+        {
+          "id": "cb-1",
+          "name": "Comprende e integra los fundamentos de las ciencias básicas biomédicas para la interpretación del funcionamiento normal del cuerpo humano en sus distintos niveles de organización estructural y en diferentes etapas del ciclo vital humano.",
+          "resultados": [
+            {
+              "id": "cb-1-1",
+              "name": "Identificar, describir y correlacionar la estructura y función del cuerpo humano normal."
+            },
+            {
+              "id": "cb-1-2",
+              "name": "Explicar los mecanismos celulares y moleculares que regulan la función de tejidos, órganos y sistemas corporales para identificar correlaciones funcionales en el ser humano."
+            },
+            {
+              "id": "cb-1-3",
+              "name": "Integrar relaciones conceptuales entre áreas de ciencias básicas para explicar el funcionamiento normal y su relación con patologías prevalentes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ibc",
+      "name": "Integración Básico-Clínica",
+      "competencias": [
+        {
+          "id": "ibc-1",
+          "name": "Integra los fundamentos biomédicos y los conocimientos fisiopatológicos con las técnicas semiológicas para analizar hallazgos clínicos y proponer hipótesis diagnósticas iniciales.",
+          "resultados": [
+            {
+              "id": "ibc-1-1",
+              "name": "Aplicar técnicas semiológicas para identificar estados normales y patológicos."
+            },
+            {
+              "id": "ibc-1-2",
+              "name": "Proponer hipótesis diagnósticas iniciales."
+            },
+            {
+              "id": "ibc-1-3",
+              "name": "Conocer bases de la terapia farmacológica y no farmacológica con enfoque ético y racional."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cc",
+      "name": "Ciencias Clínicas (Ciclo Vital Humano)",
+      "competencias": [
+        {
+          "id": "cc-1",
+          "name": "Realiza diagnóstico mediante evaluación clínica integral y establece planes terapéuticos basados en evidencia.",
+          "resultados": [
+            {
+              "id": "cc-1-1",
+              "name": "Realizar historia clínica, examen físico e interpretar estudios para diagnóstico."
+            },
+            {
+              "id": "cc-1-2",
+              "name": "Formular intervenciones terapéuticas integrales basadas en evidencia."
+            }
+          ]
+        },
+        {
+          "id": "cc-2",
+          "name": "Realiza atención integral y promueve rehabilitación funcional interdisciplinaria.",
+          "resultados": [
+            {
+              "id": "cc-2-1",
+              "name": "Identificar condiciones discapacitantes y promover rehabilitación funcional."
+            }
+          ]
+        },
+        {
+          "id": "cc-3",
+          "name": "Participa en atención en cuidados paliativos.",
+          "resultados": [
+            {
+              "id": "cc-3-1",
+              "name": "Proporcionar atención inicial en cuidados paliativos a pacientes y familias."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inv",
+      "name": "Investigación e Innovación",
+      "competencias": [
+        {
+          "id": "inv-1",
+          "name": "Participa en procesos de investigación en salud utilizando críticamente la evidencia científica e integrando principios metodológicos, tecnológicos y éticos.",
+          "resultados": [
+            {
+              "id": "inv-1-1",
+              "name": "Comprender y aplicar principios del proceso de investigación y bioética."
+            },
+            {
+              "id": "inv-1-2",
+              "name": "Usar herramientas digitales para gestión de información científica."
+            },
+            {
+              "id": "inv-1-3",
+              "name": "Analizar críticamente la literatura científica."
+            },
+            {
+              "id": "inv-1-4",
+              "name": "Participar en proyectos de investigación e innovación."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ss",
+      "name": "Salud y Sociedad",
+      "competencias": [
+        {
+          "id": "ss-1",
+          "name": "Conoce los determinantes del proceso salud-enfermedad a nivel individual, familiar y comunitario.",
+          "resultados": [
+            {
+              "id": "ss-1-1",
+              "name": "Comprender procesos de atención integral en salud."
+            },
+            {
+              "id": "ss-1-2",
+              "name": "Reconocer amenazas a la salud ambiental y actuar en promoción y prevención."
+            }
+          ]
+        },
+        {
+          "id": "ss-2",
+          "name": "Integra determinantes sociales y participa en la gestión de la salud.",
+          "resultados": [
+            {
+              "id": "ss-2-1",
+              "name": "Interrelacionar determinantes biológicos, sociales y ambientales."
+            },
+            {
+              "id": "ss-2-2",
+              "name": "Aplicar habilidades de liderazgo y gestión en salud."
+            },
+            {
+              "id": "ss-2-3",
+              "name": "Diseñar acciones de salud con enfoque de derechos, género y diversidad."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cp",
+      "name": "Comunicación y Profesionalismo Médico",
+      "competencias": [
+        {
+          "id": "cp-1",
+          "name": "Demuestra habilidades de comunicación, profesionalismo y educación en salud.",
+          "resultados": [
+            {
+              "id": "cp-1-1",
+              "name": "Aplicar principios éticos y de profesionalismo."
+            },
+            {
+              "id": "cp-1-2",
+              "name": "Diseñar estrategias educativas en salud."
+            },
+            {
+              "id": "cp-1-3",
+              "name": "Aplicar comunicación empática y asertiva."
+            }
+          ]
+        },
+        {
+          "id": "cp-2",
+          "name": "Participa en equipos interdisciplinarios utilizando TIC.",
+          "resultados": [
+            {
+              "id": "cp-2-1",
+              "name": "Utilizar TIC en procesos asistenciales, educativos y de gestión."
+            },
+            {
+              "id": "cp-2-2",
+              "name": "Manejar un idioma adicional para acceso a conocimiento global."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
