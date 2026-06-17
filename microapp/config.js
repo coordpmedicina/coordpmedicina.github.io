@@ -3,7 +3,7 @@
 // ============================================
 
 const SUPABASE_URL = 'https://dljhbtmtjuqmagfetsql.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsamhidG10anVxbWFnZmV0c3FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDY1MTAxNDksImV4cCI6MjAyMjA4NjE0OX0.XW4kL-7VZPr3rKcDh_wLJi0DTzqQe9mYvI5P8rN7LfI';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsamhidG10anVxbWFnZmV0c3FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3MjAxNDksImV4cCI6MjA5NzI5NjE0OX0.HZWFTb9-ovjLcUPHF9jsa-lGntdvkHXGQin43MGXwlk';
 
 let supabase = null;
 if (typeof window !== 'undefined' && window.supabase) {
