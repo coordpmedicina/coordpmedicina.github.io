@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Supabase Connection Status
 async function testSupabaseConnection() {
     try {
-        const { error } = await supabase.from('microcurriculum_versions').select('count()', { count: 'exact' }).limit(1);
+        const { error } = await supabase.from('microcurriculum_versions').select('id').limit(1);
         if (error && error.code !== 'PGRST116') throw error;
         return true;
     } catch (error) {
