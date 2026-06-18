@@ -698,28 +698,6 @@
             <!-- ALERTS -->
             <div id="alert" class="alert"></div>
 
-            <!-- VERSIONES PREVIAS (Collapsible) -->
-            <div style="background: #f0f4f8; border: 1px solid #dce6ef; border-radius: 8px; margin-bottom: 20px; overflow: hidden;">
-                <button onclick="toggleVersionsPanel()" style="width: 100%; padding: 16px; text-align: left; background: #e8f0ff; border: none; cursor: pointer; font-weight: 600; color: #1D5FA6; display: flex; justify-content: space-between; align-items: center; font-size: 14px;">
-                    <span>📦 Versiones Previas</span>
-                    <span id="versionsToggleIcon" style="font-size: 16px;">▼</span>
-                </button>
-                <div id="versionsPanel" style="display: none; padding: 16px; background: white; border-top: 1px solid #dce6ef;">
-                    <div style="margin-bottom: 16px;">
-                        <h4 style="color: #1D5FA6; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Progreso Actual</h4>
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="flex: 1; height: 8px; background: #dce6ef; border-radius: 4px; overflow: hidden;">
-                                <div id="currentProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #1D5FA6, #2478C5); transition: width 0.3s;"></div>
-                            </div>
-                            <span id="currentProgressPercent" style="font-size: 13px; font-weight: 600; color: #1D5FA6; min-width: 40px;">0%</span>
-                        </div>
-                    </div>
-                    <div id="versionsList" style="max-height: 200px; overflow-y: auto;">
-                        <p style="color: #999; font-size: 12px;">No hay versiones guardadas</p>
-                    </div>
-                </div>
-            </div>
-
             <!-- TAB: IDENTIFICATION -->
             <div id="identification" class="tab-content active">
                 <h2 class="section-title">📋 Identificación de la Asignatura</h2>
@@ -1178,6 +1156,28 @@
                 <button class="btn-secondary" onclick="clearForm()">🗑️ Limpiar Formulario</button>
                 <button class="btn-warning" onclick="saveToSupabase()">💾 Guardar Progreso</button>
                 <button class="btn-success" onclick="saveCompleteVersion()" style="background: linear-gradient(135deg, #1a7a4a, #2a9d5f);">✅ Guardar Versión Completa</button>
+            </div>
+
+            <!-- VERSIONES PREVIAS (Collapsible) -->
+            <div style="background: #f0f4f8; border: 1px solid #dce6ef; border-radius: 8px; margin-top: 20px; overflow: hidden;">
+                <button onclick="toggleVersionsPanel()" style="width: 100%; padding: 16px; text-align: left; background: #e8f0ff; border: none; cursor: pointer; font-weight: 600; color: #1D5FA6; display: flex; justify-content: space-between; align-items: center; font-size: 14px;">
+                    <span>📦 Versiones Previas</span>
+                    <span id="versionsToggleIcon" style="font-size: 16px;">▼</span>
+                </button>
+                <div id="versionsPanel" style="display: none; padding: 16px; background: white; border-top: 1px solid #dce6ef;">
+                    <div style="margin-bottom: 16px;">
+                        <h4 style="color: #1D5FA6; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Progreso Actual</h4>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="flex: 1; height: 8px; background: #dce6ef; border-radius: 4px; overflow: hidden;">
+                                <div id="currentProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #1D5FA6, #2478C5); transition: width 0.3s;"></div>
+                            </div>
+                            <span id="currentProgressPercent" style="font-size: 13px; font-weight: 600; color: #1D5FA6; min-width: 40px;">0%</span>
+                        </div>
+                    </div>
+                    <div id="versionsList" style="max-height: 200px; overflow-y: auto;">
+                        <p style="color: #999; font-size: 12px;">No hay versiones guardadas</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
