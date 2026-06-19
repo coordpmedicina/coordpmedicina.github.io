@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coordinación Programa de Medicina | Universidad del Cauca</title>
+<meta name="description" content="Sitio oficial de la Coordinación del Programa de Medicina, Facultad de Ciencias de la Salud, Universidad del Cauca.">
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
 :root{
     --azul:#001B6D;
+    --azul-profundo:#000B33;
     --rojo:#B5121B;
+    --dorado:#C9A24D;
+    --marfil:#F4F1E8;
     --gris:#f4f6f9;
     --texto:#2c2c2c;
 }
@@ -29,80 +34,182 @@ body{
     color:var(--texto);
 }
 
+a{ color:inherit; }
+
+/* ---------- HERO ---------- */
+
 .hero{
+    position:relative;
     min-height:100vh;
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center;
+    overflow:hidden;
+    color:#fff;
+    padding:48px 32px;
     background:
-    linear-gradient(rgba(0,27,109,.92), rgba(0,27,109,.92)),
-    url('https://images.unsplash.com/photo-1516549655169-df83a0774514');
-    background-size:cover;
-    background-position:center;
-    color:white;
-    padding:40px;
+        radial-gradient(circle at 50% -10%, rgba(181,18,27,.22), transparent 48%),
+        repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0, rgba(255,255,255,.035) 1px, transparent 1px, transparent 48px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0, rgba(255,255,255,.035) 1px, transparent 1px, transparent 48px),
+        linear-gradient(160deg, var(--azul-profundo), var(--azul) 58%, #001a66 100%);
 }
 
 .container{
-    max-width:900px;
+    max-width:780px;
 }
 
-.logo{
-    width:110px;
-    margin-bottom:30px;
+.eyebrow{
+    font-size:.78rem;
+    font-weight:600;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:rgba(244,241,232,.78);
+    margin-bottom:18px;
+    animation:subir .65s ease .35s both;
 }
 
 h1{
-    font-size:3.5rem;
+    font-family:'Source Serif 4', Georgia, serif;
+    font-size:3.4rem;
     font-weight:700;
-    margin-bottom:20px;
+    line-height:1.12;
+    letter-spacing:-.01em;
+    margin-bottom:14px;
+    animation:subir .7s ease .5s both;
 }
 
 h2{
-    font-size:1.5rem;
+    font-family:'Montserrat',sans-serif;
+    font-size:1.25rem;
     font-weight:300;
-    margin-bottom:30px;
-}
-
-p{
-    font-size:1.1rem;
-    max-width:700px;
-    margin:auto;
-    line-height:1.8;
+    letter-spacing:.02em;
+    color:rgba(255,255,255,.82);
+    margin-bottom:28px;
+    animation:subir .7s ease .62s both;
 }
 
 .line{
     width:90px;
-    height:4px;
+    height:3px;
     background:var(--rojo);
-    margin:35px auto;
+    margin:0 auto 30px;
     border-radius:10px;
+    animation:linea .7s ease .78s both;
+}
+
+.descripcion{
+    font-size:1.05rem;
+    max-width:620px;
+    margin:0 auto;
+    line-height:1.8;
+    color:rgba(255,255,255,.88);
+    animation:subir .7s ease .92s both;
+}
+
+/* ---------- ENLACES A RECURSOS ---------- */
+
+.recursos{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:14px;
+    margin-top:44px;
+    animation:subir .7s ease 1.08s both;
+}
+
+.recurso{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 26px;
+    border:1px solid rgba(244,241,232,.32);
+    border-radius:3px;
+    background:rgba(255,255,255,.025);
+    text-decoration:none;
+    font-size:.78rem;
+    font-weight:600;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:#fff;
+    transition:background .25s ease, border-color .25s ease, transform .25s ease;
+}
+
+.recurso .flecha{
+    transition:transform .25s ease;
+}
+
+.recurso:hover,
+.recurso:focus-visible{
+    background:var(--rojo);
+    border-color:var(--rojo);
+    transform:translateY(-2px);
+}
+
+.recurso:hover .flecha,
+.recurso:focus-visible .flecha{
+    transform:translateX(4px);
+}
+
+.recurso:focus-visible{
+    outline:2px solid var(--dorado);
+    outline-offset:3px;
 }
 
 footer{
     position:absolute;
-    bottom:25px;
+    bottom:24px;
     left:0;
     width:100%;
     text-align:center;
-    font-size:.9rem;
-    opacity:.85;
+    font-size:.82rem;
+    letter-spacing:.03em;
+    color:rgba(255,255,255,.65);
+    animation:subir .8s ease 1.3s both;
 }
+
+/* ---------- ANIMACIONES ---------- */
+
+@keyframes aparecerSello{
+    from{ opacity:0; transform:scale(.85); }
+    to{ opacity:1; transform:scale(1); }
+}
+
+@keyframes subir{
+    from{ opacity:0; transform:translateY(14px); }
+    to{ opacity:1; transform:translateY(0); }
+}
+
+@keyframes linea{
+    from{ width:0; }
+    to{ width:90px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .sello, .eyebrow, h1, h2, .line, .descripcion, .recursos, footer{
+        animation:none !important;
+    }
+}
+
+/* ---------- RESPONSIVE ---------- */
 
 @media(max-width:768px){
 
-    h1{
-        font-size:2.3rem;
+    h1{ font-size:2.2rem; }
+
+    h2{ font-size:1.05rem; }
+
+    .descripcion{ font-size:.98rem; }
+
+    .recursos{
+        flex-direction:column;
+        align-items:stretch;
+        gap:10px;
     }
 
-    h2{
-        font-size:1.2rem;
-    }
+    .recurso{ justify-content:center; }
 
-    p{
-        font-size:1rem;
-    }
+    footer{ font-size:.74rem; padding:0 16px; }
 }
 
 </style>
@@ -113,30 +220,36 @@ footer{
 
 <section class="hero">
 
-```
-<div class="container">
+    <div class="container">
 
-    <img class="logo"
-    src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Escudo_Universidad_del_Cauca.svg"
-    alt="Universidad del Cauca">
+        <p class="eyebrow">Facultad de Ciencias de la Salud</p>
 
-    <h1>Coordinación Programa de Medicina</h1>
+        <h1>Coordinación Programa de Medicina</h1>
 
-    <h2>Universidad del Cauca</h2>
+        <h2>Universidad del Cauca</h2>
 
-    <div class="line"></div>
+        <div class="line"></div>
 
-    <p>
-        Sitio web oficial de la Coordinación del Programa de Medicina
-        de la Universidad del Cauca.
-    </p>
+        <p class="descripcion">
+            Formamos médicas y médicos con rigor científico, pensamiento crítico
+            y compromiso social, bajo altos estándares de calidad académica
+            y acreditación institucional.
+        </p>
 
-</div>
+        <nav class="recursos" aria-label="Recursos del programa">
+            <a class="recurso" href="https://coordpmedicina.github.io/microapp/" target="_blank" rel="noopener">
+                Gestión de Microcurrículos <span class="flecha">→</span>
+            </a>
+            <a class="recurso" href="https://coordpmedicina.github.io/e_asignaturas/informe" target="_blank" rel="noopener">
+                Evaluación de asignaturas <span class="flecha">→</span>
+            </a>
+        </nav>
 
-<footer>
-    © 2026 · Universidad del Cauca · Popayán, Colombia
-</footer>
-```
+    </div>
+
+    <footer>
+        © 2026 · Universidad del Cauca · Popayán, Colombia
+    </footer>
 
 </section>
 
