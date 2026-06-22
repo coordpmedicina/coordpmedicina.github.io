@@ -1,0 +1,70 @@
+{
+  "strategies": [
+    {
+      "id": "MEP",
+      "abbreviation": "MEP",
+      "name": "Método expositivo participativo",
+      "description": "Presentación estructurada de contenidos por el docente con participación activa de los estudiantes, apoyada en recursos didácticos y espacios de discusión para construir conceptos clave."
+    },
+    {
+      "id": "TG",
+      "abbreviation": "TG",
+      "name": "Talleres de aprendizaje (individuales y grupales)",
+      "description": "Actividades orientadas a aplicar, reforzar o profundizar conocimientos mediante ejercicios, resolución de problemas o productos académicos, desarrollados de forma individual o colaborativa."
+    },
+    {
+      "id": "GEA",
+      "abbreviation": "GEA",
+      "name": "Guías y recursos para aprendizaje autónomo",
+      "description": "Incluye guías de estudio, tutoriales, videos y otros recursos que orientan el trabajo independiente antes, durante o después de las sesiones presenciales."
+    },
+    {
+      "id": "EIC",
+      "abbreviation": "EIC",
+      "name": "Esquemas integradores y organizadores gráficos",
+      "description": "Elaboración de mapas conceptuales, diagramas u otras representaciones visuales que facilitan la integración de conceptos, el razonamiento crítico y la comprensión de relaciones complejas."
+    },
+    {
+      "id": "PLS",
+      "abbreviation": "PLS",
+      "name": "Prácticas experimentales y simulación",
+      "description": "Comprende actividades de laboratorio y escenarios de simulación que permiten aplicar conocimientos, desarrollar habilidades prácticas y fortalecer la toma de decisiones en entornos controlados."
+    },
+    {
+      "id": "ACP",
+      "abbreviation": "ACP",
+      "name": "Análisis de casos, problemas y correlaciones aplicadas",
+      "description": "Integra metodologías como análisis de casos, correlaciones básico-clínicas y Aprendizaje Basado en Problemas, promoviendo el razonamiento, la integración de conocimientos y la resolución de situaciones reales o simuladas."
+    },
+    {
+      "id": "ABR",
+      "abbreviation": "ABR",
+      "name": "Aprendizaje Basado en Retos y Proyectos",
+      "description": "Los estudiantes enfrentan desafíos o desarrollan proyectos aplicados que requieren investigar, diseñar soluciones y generar productos concretos con impacto académico o social."
+    },
+    {
+      "id": "FCI",
+      "abbreviation": "FCI",
+      "name": "Clase invertida (Flipped Classroom)",
+      "description": "El estudio inicial de los contenidos ocurre de forma autónoma mediante materiales previos, mientras que el tiempo de clase se dedica al análisis, la discusión y la aplicación práctica."
+    },
+    {
+      "id": "RLC",
+      "abbreviation": "RLC",
+      "name": "Revisión y discusión de literatura científica",
+      "description": "Lectura crítica y análisis de artículos científicos para fortalecer la interpretación de la evidencia, el pensamiento crítico y la capacidad de discusión académica."
+    },
+    {
+      "id": "APS",
+      "abbreviation": "APS",
+      "name": "Aprendizaje-Servicio",
+      "description": "Estrategia que combina objetivos formativos con actividades de servicio a la comunidad, permitiendo aplicar conocimientos en contextos reales y fomentar la responsabilidad social."
+    },
+    {
+      "id": "LUD",
+      "abbreviation": "LUD",
+      "name": "Aprendizaje ludificado",
+      "description": "Empleo de dinámicas de juego, representaciones, desafíos o actividades creativas para incrementar la motivación, facilitar la comprensión y favorecer la participación activa."
+    }
+  ]
+}
