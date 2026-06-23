@@ -787,8 +787,8 @@ function buildMarkdownBody(fd, realName, realModule, prereqItems) {
         md += matrix.map((m,i) => `| ${i+1} | ${na(m.modulo)} | ${na(m.competencia)} | ${na(m.ra)} | ${na(m.estrategiaMet)} | ${na(m.estrategiaEval)} | ${na(m.indicador)} |`).join(nl) + nl;
     } else { md += `_Sin filas en la matriz de competencias._\n`; }
 
-    // 5. Metodología y Contenidos
-    md += `\n# Metodología y Contenidos\n\n`;
+    // 5. Contenidos y Metodología
+    md += `\n# Contenidos y Metodología\n\n`;
     md += `## Temas y estrategias pedagógicas\n\n`;
     if (topics.length) {
         md += `| # | Tema / Unidad | Estrategia(s) | Trabajo independiente | Bibliografía |\n`;
@@ -1009,7 +1009,7 @@ execute:
     }
 
     // ── 5. Metodología ─────────────────────────────────────────
-    qmd += `# Metodología y Contenidos {#sec-metodologia}\n\n`;
+    qmd += `# Contenidos y Metodología {#sec-metodologia}\n\n`;
     qmd += `## Temas y estrategias pedagógicas {.unnumbered}\n\n`;
     if (topics.length) {
         qmd += `| # | Tema / Unidad | Estrategia(s) | Trabajo independiente | Bibliografía |\n`;
@@ -2360,6 +2360,76 @@ function saveNewStrategy() {
     showAlert(`✅ Estrategia "${name}" creada correctamente`, 'success');
 }
 
+let editingTopicId = null;
+let addingSubtopicParentId = null;
+
+function _resetTopicForm() {
+    document.getElementById('methodTopic').value = '';
+    document.querySelectorAll('.method-estrategia-checkbox:checked').forEach(cb => cb.checked = false);
+    document.getElementById('methodIndependent').value = '';
+    document.getElementById('methodBibliography').value = '';
+    const btn = document.getElementById('addTopicBtn');
+    const heading = document.getElementById('addTopicHeading');
+    if (btn) btn.textContent = '+ Agregar Tema';
+    if (heading) heading.textContent = '➕ Agregar Tema/Unidad';
+    editingTopicId = null;
+    addingSubtopicParentId = null;
+}
+
+function editMethodologyTopic(id) {
+    const t = methodologyTopics.find(t => t.id === id);
+    if (!t) return;
+    editingTopicId = id;
+    addingSubtopicParentId = null;
+    document.getElementById('methodTopic').value = t.topic;
+    const stratValues = t.strategy ? t.strategy.split(', ') : [];
+    document.querySelectorAll('.method-estrategia-checkbox').forEach(cb => { cb.checked = stratValues.includes(cb.value); });
+    document.getElementById('methodIndependent').value = t.independent || '';
+    document.getElementById('methodBibliography').value = t.bibliography || '';
+    const btn = document.getElementById('addTopicBtn');
+    const heading = document.getElementById('addTopicHeading');
+    if (btn) btn.textContent = '✅ Guardar cambios';
+    if (heading) heading.textContent = '✏️ Editar Tema/Unidad';
+    document.getElementById('addTopicFormSection')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('methodTopic').focus();
+}
+
+function addSubtopicFor(parentId) {
+    const parent = methodologyTopics.find(t => t.id === parentId);
+    if (!parent) return;
+    editingTopicId = null;
+    addingSubtopicParentId = parentId;
+    document.getElementById('methodTopic').value = '';
+    const stratValues = parent.strategy ? parent.strategy.split(', ') : [];
+    document.querySelectorAll('.method-estrategia-checkbox').forEach(cb => { cb.checked = stratValues.includes(cb.value); });
+    document.getElementById('methodIndependent').value = '';
+    document.getElementById('methodBibliography').value = '';
+    const btn = document.getElementById('addTopicBtn');
+    const heading = document.getElementById('addTopicHeading');
+    if (btn) btn.textContent = '+ Agregar Subtema';
+    if (heading) heading.textContent = `📌 Subtema de: "${parent.topic}"`;
+    document.getElementById('addTopicFormSection')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('methodTopic').focus();
+}
+
+function moveTopicUp(id) {
+    const idx = methodologyTopics.findIndex(t => t.id === id);
+    if (idx <= 0) return;
+    [methodologyTopics[idx - 1], methodologyTopics[idx]] = [methodologyTopics[idx], methodologyTopics[idx - 1]];
+    formData.methodology = methodologyTopics;
+    renderMethodologyTable();
+    saveLocalStorageSilent();
+}
+
+function moveTopicDown(id) {
+    const idx = methodologyTopics.findIndex(t => t.id === id);
+    if (idx === -1 || idx >= methodologyTopics.length - 1) return;
+    [methodologyTopics[idx], methodologyTopics[idx + 1]] = [methodologyTopics[idx + 1], methodologyTopics[idx]];
+    formData.methodology = methodologyTopics;
+    renderMethodologyTable();
+    saveLocalStorageSilent();
+}
+
 function addMethodologyTopic() {
     const topic = document.getElementById('methodTopic').value.trim();
     const checkedStrats = Array.from(document.querySelectorAll('.method-estrategia-checkbox:checked'));
@@ -2373,27 +2443,36 @@ function addMethodologyTopic() {
 
     const strategyStr = checkedStrats.map(cb => cb.value).join(', ');
 
-    const newTopic = {
-        id: Date.now(),
-        topic,
-        strategy: strategyStr,
-        independent,
-        bibliography
-    };
+    if (editingTopicId !== null) {
+        const idx = methodologyTopics.findIndex(t => t.id === editingTopicId);
+        if (idx !== -1) {
+            methodologyTopics[idx] = { ...methodologyTopics[idx], topic, strategy: strategyStr, independent, bibliography };
+        }
+        _resetTopicForm();
+        showAlert('✅ Tema actualizado', 'success');
+    } else if (addingSubtopicParentId !== null) {
+        const parentId = addingSubtopicParentId;
+        const parentIdx = methodologyTopics.findIndex(t => t.id === parentId);
+        let insertAfter = parentIdx;
+        for (let i = parentIdx + 1; i < methodologyTopics.length; i++) {
+            if (methodologyTopics[i].parentId === parentId) insertAfter = i;
+            else break;
+        }
+        methodologyTopics.splice(insertAfter + 1, 0, { id: Date.now(), topic, strategy: strategyStr, independent, bibliography, isSubtopic: true, parentId });
+        _resetTopicForm();
+        showAlert('✅ Subtema agregado', 'success');
+    } else {
+        if (!formData.methodology) formData.methodology = [];
+        formData.methodology.push({ id: Date.now(), topic, strategy: strategyStr, independent, bibliography });
+        methodologyTopics = formData.methodology;
+        _resetTopicForm();
+        showAlert('✅ Tema agregado correctamente', 'success');
+    }
 
-    if (!formData.methodology) formData.methodology = [];
-    formData.methodology.push(newTopic);
-    methodologyTopics = formData.methodology;
-
-    document.getElementById('methodTopic').value = '';
-    document.querySelectorAll('.method-estrategia-checkbox:checked').forEach(cb => cb.checked = false);
-    document.getElementById('methodIndependent').value = '';
-    document.getElementById('methodBibliography').value = '';
-
+    formData.methodology = methodologyTopics;
     renderMethodologyTable();
     renderCronograma();
-    saveLocalStorage();
-    showAlert('✅ Tema agregado correctamente', 'success');
+    saveLocalStorageSilent();
     updateStats();
 }
 
@@ -2402,39 +2481,47 @@ function renderMethodologyTable() {
 
     if (methodologyTopics.length === 0) {
         tbody.innerHTML = `
-            <tr style="border-bottom: 1px solid #dce6ef;">
-                <td colspan="4" style="padding: 40px 20px; text-align: center; color: #999; font-size: 13px;">
-                    No hay temas agregados. Completa el formulario a continuación.
-                </td>
-            </tr>
-        `;
+            <tr><td colspan="5" style="padding: 40px 20px; text-align: center; color: #999; font-size: 13px;">
+                No hay temas agregados. Completa el formulario a continuación.
+            </td></tr>`;
         return;
     }
 
-    tbody.innerHTML = methodologyTopics.map(t => {
+    tbody.innerHTML = methodologyTopics.map((t, idx) => {
         const stratDisplay = typeof t.strategy === 'string'
             ? t.strategy
             : (t.strategy?.abbreviation ? `${t.strategy.abbreviation} — ${t.strategy.name}` : '—');
+        const isSub = t.isSubtopic === true;
+        const rowBg = isSub ? '#eef4ff' : (idx % 2 === 0 ? '#fafbfc' : 'white');
+        const indent = isSub ? 'padding-left:28px;border-left:3px solid #aac4f0;' : '';
+        const prefix = isSub ? '<span style="color:#6699cc;margin-right:5px;font-size:11px;">└</span>' : '';
+        const canUp = idx > 0, canDown = idx < methodologyTopics.length - 1;
+        const btnStyle = 'border:none;border-radius:4px;cursor:pointer;padding:3px 6px;font-size:12px;line-height:1;';
         return `
-        <tr style="border-bottom: 1px solid #dce6ef; background: #fafbfc;">
-            <td style="padding: 14px; font-size: 13px; color: #333;">${t.topic}</td>
-            <td style="padding: 14px; font-size: 12px; color: #1D5FA6; font-weight: 600;">${stratDisplay}</td>
-            <td style="padding: 14px; font-size: 12px; color: #555;">${t.independent || '—'}</td>
-            <td style="padding: 14px; font-size: 12px; color: #555;">
-                ${t.bibliography || '—'}
-                <button onclick="deleteMethodologyTopic(${t.id})" style="background: #fee; color: #b02020; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; margin-top: 8px; display: block;">Eliminar</button>
+        <tr style="border-bottom:1px solid #dce6ef;background:${rowBg};vertical-align:top;">
+            <td style="padding:8px 10px;font-size:13px;color:#333;${indent}">${prefix}${t.topic}</td>
+            <td style="padding:8px 10px;font-size:12px;color:#1D5FA6;font-weight:600;">${stratDisplay}</td>
+            <td style="padding:8px 10px;font-size:12px;color:#555;">${t.independent || '—'}</td>
+            <td style="padding:8px 10px;font-size:12px;color:#555;">${t.bibliography || '—'}</td>
+            <td style="padding:6px 8px;white-space:nowrap;">
+                <div style="display:flex;gap:3px;align-items:center;flex-wrap:nowrap;">
+                    ${canUp ? `<button onclick="moveTopicUp(${t.id})" title="Subir" style="${btnStyle}background:#e8f0ff;color:#1D5FA6;">▲</button>` : '<span style="display:inline-block;width:26px;"></span>'}
+                    ${canDown ? `<button onclick="moveTopicDown(${t.id})" title="Bajar" style="${btnStyle}background:#e8f0ff;color:#1D5FA6;">▼</button>` : '<span style="display:inline-block;width:26px;"></span>'}
+                    <button onclick="editMethodologyTopic(${t.id})" title="Editar" style="${btnStyle}background:#fff8e1;color:#856404;">✏️</button>
+                    ${!isSub ? `<button onclick="addSubtopicFor(${t.id})" title="Agregar subtema" style="${btnStyle}background:#e8f5e9;color:#1a7a4a;font-size:11px;">+sub</button>` : ''}
+                    <button onclick="deleteMethodologyTopic(${t.id})" title="Eliminar" style="${btnStyle}background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;font-weight:700;padding:3px 7px;">×</button>
+                </div>
             </td>
         </tr>`;
     }).join('');
 }
 
 function deleteMethodologyTopic(id) {
-    methodologyTopics = methodologyTopics.filter(t => t.id !== id);
+    methodologyTopics = methodologyTopics.filter(t => t.id !== id && t.parentId !== id);
     formData.methodology = methodologyTopics;
     renderMethodologyTable();
     renderCronograma();
-    saveLocalStorage();
-    showAlert('Tema eliminado', 'success');
+    saveLocalStorageSilent();
     updateStats();
 }
 
@@ -3096,7 +3183,7 @@ function generatePreview() {
     // ── chapter / section builders ───────────────────────────
     const chapters = [
         'Identificación', 'Profesores', 'Presentación',
-        'Competencias', 'Metodología y Contenidos',
+        'Competencias', 'Contenidos y Metodología',
         'Sistema de Evaluación', 'Cronograma', 'Referencias'
     ];
     // Note: chapter titles above are for TOC display only
@@ -3331,8 +3418,8 @@ function generatePreview() {
         );
     } else { body += empty('Sin filas en la matriz de competencias.'); }
 
-    // ── Ch.5 Metodología y Contenidos ────────────────────────
-    body += ch(5,'Metodología y Contenidos');
+    // ── Ch.5 Contenidos y Metodología ────────────────────────
+    body += ch(5,'Contenidos y Metodología');
     body += sc(5,1,'Temas y estrategias pedagógicas');
     if (topics.length) {
         body += bkTable(['#','Tema / Unidad','Estrategia(s)','Trabajo independiente','Bibliografía'],
@@ -3340,7 +3427,7 @@ function generatePreview() {
                 const strats = Array.isArray(t.strategies) ? t.strategies.join(', ') : (t.strategy||'');
                 return bkTr([i+1, esc(t.topic), esc(strats), esc(t.independent), esc(t.bibliography)]);
             }));
-    } else { body += empty('Sin temas registrados en Metodología y Contenidos.'); }
+    } else { body += empty('Sin temas registrados en Contenidos y Metodología.'); }
 
     // ── Ch.6 Sistema de Evaluación ────────────────────────────
     body += ch(6,'Sistema de Evaluación');

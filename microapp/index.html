@@ -690,7 +690,7 @@
             <button class="nav-tab" data-tab="teachers">👨‍🏫 Profesores</button>
             <button class="nav-tab" data-tab="presentation">📝 Presentación</button>
             <button class="nav-tab" data-tab="competencies">🎯 Competencias</button>
-            <button class="nav-tab" data-tab="methodology">📚 Metodología y Contenidos</button>
+            <button class="nav-tab" data-tab="methodology">📚 Contenidos y Metodología</button>
             <button class="nav-tab" data-tab="evaluation">✅ Evaluación</button>
             <button class="nav-tab" data-tab="schedule">📅 Cronograma</button>
             <button class="nav-tab" data-tab="export">📤 Exportar</button>
@@ -917,18 +917,9 @@
 
             <!-- TAB: METHODOLOGY -->
             <div id="methodology" class="tab-content">
-                <h2 class="section-title">📚 Metodología y Contenidos</h2>
+                <h2 class="section-title">📚 Contenidos y Metodología</h2>
 
                 <p style="color: #666; margin-bottom: 20px;">Matriz de temas/unidades con estrategias pedagógicas, trabajo independiente y material bibliográfico</p>
-
-                <!-- ESTRATEGIAS PRECARGADAS -->
-                <div style="background: #f9fbfd; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #dce6ef;">
-                    <h3 style="color: #1D5FA6; font-weight: 600; margin-bottom: 12px; font-size: 14px;">📌 Estrategias Pedagógicas Disponibles</h3>
-                    <div id="strategiesContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px;">
-                        <!-- Se cargará dinámicamente -->
-                    </div>
-                    <button onclick="toggleNewStrategyForm()" style="background: #2478C5; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px;">+ Crear Nueva Estrategia</button>
-                </div>
 
                 <!-- FORMULARIO CREAR ESTRATEGIA (Oculto) -->
                 <div id="newStrategyForm" style="display: none; background: #fff9e6; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 2px solid #ffc107;">
@@ -960,25 +951,24 @@
                     <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                         <thead>
                             <tr style="background: linear-gradient(135deg, #1D5FA6, #2478C5); color: white;">
-                                <th style="padding: 14px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2);">Tema</th>
-                                <th style="padding: 14px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2);">Metodología</th>
-                                <th style="padding: 14px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2);">Trabajo Independiente</th>
-                                <th style="padding: 14px; text-align: left; font-weight: 600;">Material Bibliográfico</th>
+                                <th style="padding: 10px 12px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2);">Tema</th>
+                                <th style="padding: 10px 12px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2);">Metodología</th>
+                                <th style="padding: 10px 12px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2);">Trabajo Independiente</th>
+                                <th style="padding: 10px 12px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2);">Material Bibliográfico</th>
+                                <th style="padding: 10px 12px; text-align: left; font-weight: 600; width: 110px;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="methodologyTableBody">
-                            <tr style="border-bottom: 1px solid #dce6ef;">
-                                <td colspan="4" style="padding: 40px 20px; text-align: center; color: #999; font-size: 13px;">
-                                    No hay temas agregados. Completa el formulario a continuación.
-                                </td>
-                            </tr>
+                            <tr><td colspan="5" style="padding: 40px 20px; text-align: center; color: #999; font-size: 13px;">
+                                No hay temas agregados. Completa el formulario a continuación.
+                            </td></tr>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- FORMULARIO AGREGAR TEMA -->
-                <div style="background: #f9fbfd; padding: 24px; border-radius: 12px; margin-top: 30px; border: 1px solid #dce6ef;">
-                    <h3 style="margin-bottom: 20px; color: #1D5FA6; font-weight: 600;">➕ Agregar Tema/Unidad</h3>
+                <div id="addTopicFormSection" style="background: #f9fbfd; padding: 24px; border-radius: 12px; margin-top: 30px; border: 1px solid #dce6ef;">
+                    <h3 id="addTopicHeading" style="margin-bottom: 20px; color: #1D5FA6; font-weight: 600;">➕ Agregar Tema/Unidad</h3>
 
                     <div class="form-group">
                         <label>Tema/Unidad</label>
@@ -987,7 +977,7 @@
 
                     <div class="form-group">
                         <label style="font-weight: 600; font-size: 13px;">🧩 Metodología * <span style="font-weight: 400; color: #888;">(selecciona una o varias)</span></label>
-                        <div id="methodStrategyContainer" style="display: flex; flex-direction: column; gap: 2px; background: white; padding: 8px; border: 1px solid #dce6ef; border-radius: 6px; max-height: 220px; overflow-y: auto;">
+                        <div id="methodStrategyContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; background: white; padding: 4px; border: 1px solid #dce6ef; border-radius: 6px; max-height: 220px; overflow-y: auto;">
                             <p style="color: #999; font-size: 12px;">Cargando estrategias...</p>
                         </div>
                     </div>
@@ -1002,7 +992,16 @@
                         <textarea id="methodBibliography" placeholder="Referencias, libros, artículos, recursos en línea..." style="width: 100%; padding: 10px; border: 1px solid #dce6ef; border-radius: 6px; min-height: 60px;"></textarea>
                     </div>
 
-                    <button class="add-btn" onclick="addMethodologyTopic()" style="background: linear-gradient(135deg, #1D5FA6, #2478C5); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-top: 15px;">+ Agregar Tema</button>
+                    <button id="addTopicBtn" class="add-btn" onclick="addMethodologyTopic()" style="background: linear-gradient(135deg, #1D5FA6, #2478C5); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-top: 15px;">+ Agregar Tema</button>
+                </div>
+
+                <!-- ESTRATEGIAS PRECARGADAS (al final) -->
+                <div style="background: #f9fbfd; padding: 20px; border-radius: 12px; margin-top: 24px; border: 1px solid #dce6ef;">
+                    <h3 style="color: #1D5FA6; font-weight: 600; margin-bottom: 12px; font-size: 14px;">📌 Estrategias Pedagógicas Disponibles</h3>
+                    <div id="strategiesContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px;">
+                        <!-- Se cargará dinámicamente -->
+                    </div>
+                    <button onclick="toggleNewStrategyForm()" style="background: #2478C5; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px;">+ Crear Nueva Estrategia</button>
                 </div>
             </div>
 
