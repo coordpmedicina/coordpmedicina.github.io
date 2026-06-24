@@ -241,6 +241,7 @@ footer{border-top:1px solid var(--border);padding:16px 32px;display:flex;align-i
           <option>Administración en salud</option>
           <option>Ginecología y Obstetricia</option>
           <option>Medicina preventiva</option>
+          <option>Medicina legal</option>
         </select>
       </div>
       <div class="auth-field"><label>Contraseña</label><input class="auth-input" id="r-pwd" type="password" placeholder="Mínimo 6 caracteres"></div>
@@ -306,7 +307,7 @@ const LK_COL  = {Deficiente:'#e24b4a',Aceptable:'#ef9f27',Bueno:'#37a6dd',Excele
 const SAT_ORD = ['Muy bajo','Bajo','Medio','Alto','Muy alto'];
 const SAT_COL = {'Muy bajo':'#e24b4a','Bajo':'#ef9f27','Medio':'#37a6dd','Alto':'#2db96d','Muy alto':'#1a7a4a'};
 
-const ASIG_LIST = ["Biología celular, molecular y bioquímica (L)","Fundamentos de investigación I","Ética Médica I","Introducción a la Medicina","Morfología (L)","Fundamentos de investigación II","Psicobiología","Fisiología general y de sistemas (L)","Fundamentos de investigación III","Genética básica","Microbiología y parasitología básico-clínica (L)","Patología General","Fundamentos de investigación IV","Farmacología","Semiología","Psicología","Salud Familiar","Cirugía General","Seminario de Historia de la Medicina","Medicina Interna I","Patología Especial (L)","Psicopatología","Seminario de Gerontología y Geriatría","Medicina Interna II","Psiquiatría","Ética Médica II","Seminario de tanatología y cuidado paliativo","Cirugía especialidades","Seminario taller de desastres","Pediatría","Administración en salud","Ginecología y Obstetricia","Medicina preventiva"];
+const ASIG_LIST = ["Biología celular, molecular y bioquímica (L)","Fundamentos de investigación I","Ética Médica I","Introducción a la Medicina","Morfología (L)","Fundamentos de investigación II","Psicobiología","Fisiología general y de sistemas (L)","Fundamentos de investigación III","Genética básica","Microbiología y parasitología básico-clínica (L)","Patología General","Fundamentos de investigación IV","Farmacología","Semiología","Psicología","Salud Familiar","Cirugía General","Seminario de Historia de la Medicina","Medicina Interna I","Patología Especial (L)","Psicopatología","Seminario de Gerontología y Geriatría","Medicina Interna II","Psiquiatría","Ética Médica II","Seminario de tanatología y cuidado paliativo","Cirugía especialidades","Seminario taller de desastres","Pediatría","Administración en salud","Ginecología y Obstetricia","Medicina preventiva","Medicina legal"];
 
 const SECS = [
   {id:'gen', title:'Aspectos generales',
@@ -463,6 +464,11 @@ function renderDashboard(){
   </div>
 
   <div class="text-analysis">
+    <p class="sec-title">Comentarios y sugerencias frecuentes</p>
+    ${commentsCard(recs)}
+  </div>
+
+  <div class="text-analysis">
     <p class="sec-title">⚠️ Aspectos críticos que requieren atención</p>
     ${alertsCard(recs)}
   </div>
@@ -503,11 +509,10 @@ function matrixBlock(sec, recs){
     const pcts={};
     LK_CATS.forEach(c=>{pcts[c]=parseFloat((vals.filter(v=>v===c).length/tot*100).toFixed(1));});
     const av=vals.map(v=>LK[v]).reduce((a,b)=>a+b,0)/tot;
-    const av5=parseFloat((av+1).toFixed(2));
-    return {f,pcts,av:av5,tot};
+    return {f,pcts,av,tot};
   });
   const valid=items.filter(i=>i.av!==null);
-  const sAvg=valid.length?parseFloat((avg(valid.map(i=>i.av))).toFixed(2)):null;
+  const sAvg=valid.length?avg(valid.map(i=>i.av)):null;
 
   const rows=items.map(item=>{
     const lbl=shortQ(item.f);
@@ -517,18 +522,17 @@ function matrixBlock(sec, recs){
       if(p<0.5) return '';
       return `<div class="mq-seg" style="width:${p}%;background:${LK_COL[c]}" title="${c}: ${p}%">${p>=14?Math.round(p)+'%':''}</div>`;
     }).join('');
-    const aColor=item.av>=4?'#1a7a4a':item.av>=3?'#e8a020':'#b02020';
     return `<div class="mq">
       <span class="mq-lbl">${lbl}</span>
       <div class="mq-track">${segs}</div>
-      <span class="mq-num" style="color:${aColor}">${item.av.toFixed(2)}</span>
+      <span class="mq-num" style="color:${semColor(item.av)}">${item.av.toFixed(1)}</span>
     </div>`;
   }).join('');
 
   return `<div class="mblock">
     <div class="mblock-hdr">
       <span>${sec.title}</span>
-      ${sAvg!==null?`<span class="mblock-avg">prom. ${sAvg.toFixed(2)} / 5.0</span>`:''}
+      ${sAvg!==null?`<span class="mblock-avg">prom. ${sAvg.toFixed(2)}</span>`:''}
     </div>
     <div class="mblock-body">${rows}</div>
   </div>`;
@@ -867,7 +871,7 @@ function mapRawToLabels(r) {
     '25':'Psiquiatría','26':'Ética Médica II',
     '27':'Seminario de tanatología y cuidado paliativo','28':'Cirugía especialidades',
     '29':'Seminario taller de desastres','30':'Pediatría',
-    '31':'Administración en salud','32':'Ginecología y Obstetricia','33':'Medicina preventiva'
+    '31':'Administración en salud','32':'Ginecología y Obstetricia','33':'Medicina preventiva','34':'Medicina legal'
   };
   const PERIODO = {'1':'2026-1','2':'2026-2','3':'2025-1','4':'2025-2'};
 
