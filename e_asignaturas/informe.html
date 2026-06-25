@@ -241,7 +241,6 @@ footer{border-top:1px solid var(--border);padding:16px 32px;display:flex;align-i
           <option>Administración en salud</option>
           <option>Ginecología y Obstetricia</option>
           <option>Medicina preventiva</option>
-          <option>Medicina legal</option>
         </select>
       </div>
       <div class="auth-field"><label>Contraseña</label><input class="auth-input" id="r-pwd" type="password" placeholder="Mínimo 6 caracteres"></div>
@@ -307,7 +306,7 @@ const LK_COL  = {Deficiente:'#e24b4a',Aceptable:'#ef9f27',Bueno:'#37a6dd',Excele
 const SAT_ORD = ['Muy bajo','Bajo','Medio','Alto','Muy alto'];
 const SAT_COL = {'Muy bajo':'#e24b4a','Bajo':'#ef9f27','Medio':'#37a6dd','Alto':'#2db96d','Muy alto':'#1a7a4a'};
 
-const ASIG_LIST = ["Biología celular, molecular y bioquímica (L)","Fundamentos de investigación I","Ética Médica I","Introducción a la Medicina","Morfología (L)","Fundamentos de investigación II","Psicobiología","Fisiología general y de sistemas (L)","Fundamentos de investigación III","Genética básica","Microbiología y parasitología básico-clínica (L)","Patología General","Fundamentos de investigación IV","Farmacología","Semiología","Psicología","Salud Familiar","Cirugía General","Seminario de Historia de la Medicina","Medicina Interna I","Patología Especial (L)","Psicopatología","Seminario de Gerontología y Geriatría","Medicina Interna II","Psiquiatría","Ética Médica II","Seminario de tanatología y cuidado paliativo","Cirugía especialidades","Seminario taller de desastres","Pediatría","Administración en salud","Ginecología y Obstetricia","Medicina preventiva","Medicina legal"];
+const ASIG_LIST = ["Biología celular, molecular y bioquímica (L)","Fundamentos de investigación I","Ética Médica I","Introducción a la Medicina","Morfología (L)","Fundamentos de investigación II","Psicobiología","Fisiología general y de sistemas (L)","Fundamentos de investigación III","Genética básica","Microbiología y parasitología básico-clínica (L)","Patología General","Fundamentos de investigación IV","Farmacología","Semiología","Psicología","Salud Familiar","Cirugía General","Seminario de Historia de la Medicina","Medicina Interna I","Patología Especial (L)","Psicopatología","Seminario de Gerontología y Geriatría","Medicina Interna II","Psiquiatría","Ética Médica II","Seminario de tanatología y cuidado paliativo","Cirugía especialidades","Seminario taller de desastres","Pediatría","Administración en salud","Ginecología y Obstetricia","Medicina preventiva"];
 
 const SECS = [
   {id:'gen', title:'Aspectos generales',
@@ -871,7 +870,7 @@ function mapRawToLabels(r) {
     '25':'Psiquiatría','26':'Ética Médica II',
     '27':'Seminario de tanatología y cuidado paliativo','28':'Cirugía especialidades',
     '29':'Seminario taller de desastres','30':'Pediatría',
-    '31':'Administración en salud','32':'Ginecología y Obstetricia','33':'Medicina preventiva','34':'Medicina legal'
+    '31':'Administración en salud','32':'Ginecología y Obstetricia','33':'Medicina preventiva'
   };
   const PERIODO = {'1':'2026-1','2':'2026-2','3':'2025-1','4':'2025-2'};
 
