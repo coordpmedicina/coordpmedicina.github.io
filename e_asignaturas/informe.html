@@ -524,14 +524,14 @@ function matrixBlock(sec, recs){
     return `<div class="mq">
       <span class="mq-lbl">${lbl}</span>
       <div class="mq-track">${segs}</div>
-      <span class="mq-num" style="color:${semColor(item.av)}">${item.av.toFixed(1)}</span>
+      <span class="mq-num" style="color:${semColor(item.av)}">${(item.av + 1).toFixed(1)}</span>
     </div>`;
   }).join('');
 
   return `<div class="mblock">
     <div class="mblock-hdr">
       <span>${sec.title}</span>
-      ${sAvg!==null?`<span class="mblock-avg">prom. ${sAvg.toFixed(2)}</span>`:''}
+      ${sAvg!==null?`<span class="mblock-avg">prom. ${(sAvg + 1).toFixed(2)}</span>`:''}
     </div>
     <div class="mblock-body">${rows}</div>
   </div>`;
