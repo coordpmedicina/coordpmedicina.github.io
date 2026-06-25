@@ -690,10 +690,10 @@ function drawSecChart(recs){
   const labels=SECS.map(s=>s.title);
   const data=SECS.map(s=>{
     const vals=s.fields.flatMap(f=>recs.map(r=>r[f]).filter(v=>v&&v!=='No aplica'&&LK[v]!==undefined).map(v=>LK[v]));
-    return vals.length?parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2)):0;
+    return vals.length?parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length+1).toFixed(2)):0;
   });
-  const cols=data.map(v=>semColor(v));
-  charts['sec']=new Chart(ctx,{type:'bar',data:{labels,datasets:[{data,backgroundColor:cols.map(c=>c+'33'),borderColor:cols,borderWidth:2,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`Promedio: ${c.parsed.y.toFixed(2)}`}}},scales:{y:{min:0,max:4,ticks:{stepSize:1,callback:v=>['','Deficiente','Aceptable','Bueno','Excelente'][v]||v,font:{size:10}},grid:{color:'#eef2f7'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}});
+  const cols=data.map(v=>v>=4?'#1a7a4a':v>=3?'#e8a020':'#b02020');
+  charts['sec']=new Chart(ctx,{type:'bar',data:{labels,datasets:[{data,backgroundColor:cols.map(c=>c+'33'),borderColor:cols,borderWidth:2,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`Promedio: ${c.parsed.y.toFixed(2)}`}}},scales:{y:{min:1,max:5,ticks:{stepSize:1,callback:v=>['','','Deficiente','Aceptable','Bueno','Excelente'][v]||v,font:{size:10}},grid:{color:'#eef2f7'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}});
 }
 
 function drawStkChart(recs){
