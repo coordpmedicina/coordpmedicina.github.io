@@ -1,0 +1,36 @@
+/* =========================================
+   Microcurrículos - Universidad del Cauca
+   ========================================= */
+
+body {
+  background-color: #F5F5F5;
+}
+
+/* Mejor lectura del contenido */
+.content {
+  max-width: 1100px;
+}
+
+/* Tablas */
+table {
+  font-size: 0.92rem;
+}
+
+table thead {
+  font-weight: 600;
+}
+
+/* Código */
+pre {
+  border-radius: 6px;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+}
+
+/* Títulos */
+h1, h2, h3 {
+  font-weight: 600;
+}
